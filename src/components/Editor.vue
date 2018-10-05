@@ -2,9 +2,7 @@
     <div id="editor">
         <nav>
             <ol>
-                <li v-for="i in [0,1,2,3,4,5]" 
-                    v-bind:class="{active: currentTab === i }" 
-                    v-on:click="currentTab = i">
+                <li v-for="i in [0,1,2,3,4,5]" v-bind:class="{active: currentTab === i }" v-on:click="currentTab = i">
                     <svg class="icon">
                         <use v-bind:xlink:href="`#icon-${icons[i]}`"></use>
                     </svg>
@@ -14,18 +12,34 @@
             </ol>
         </nav>
         <ol class="panes">
-            <li v-bind:class="{active: currentTab === 0}">tab 1</li>
-            <li v-bind:class="{active: currentTab === 1}">tab 2</li>
-            <li v-bind:class="{active: currentTab === 2}">tab 3</li>
-            <li v-bind:class="{active: currentTab === 3}">tab 4</li>
-            <li v-bind:class="{active: currentTab === 4}">tab 5</li>
-            <li v-bind:class="{active: currentTab === 5}">tab 6</li>
+
+            <li v-bind:class="{active: currentTab === 0}">
+                <ProfileEditor v-bind:profile="profile" />
+            </li>
+            <li v-bind:class="{active: currentTab === 1}">
+                <WorkHistory v-bind:workHistory="workHistory" />
+            </li>
+            <li v-bind:class="{active: currentTab === 2}">
+                <h2>学习经历</h2>
+            </li>
+            <li v-bind:class="{active: currentTab === 3}">
+                <h2>个人项目</h2>
+            </li>
+            <li v-bind:class="{active: currentTab === 4}">
+                <h2>获奖情况</h2>
+            </li>
+            <li v-bind:class="{active: currentTab === 5}">
+                <h2>联系方式</h2>
+            </li>
         </ol>
     </div>
 </template>
 
 <script>
+import ProfileEditor from "./ProfileEditor";
+import WorkHistory from "./WorkHistory";
 export default {
+    components: { ProfileEditor, WorkHistory },
     data() {
         return {
             currentTab: 0,
@@ -36,9 +50,17 @@ export default {
                 "Heart",
                 "jiangbei",
                 "weibiaoti-"
-            ]
+            ],
+            profile: {
+                name: "",
+                city: "",
+                bitrh: ""
+            },
+            workHistory: [{ company: "", content: "" }]
         };
-    }
+    },
+    methods: {},
+    created() {}
 };
 </script>
 
@@ -67,8 +89,21 @@ export default {
         }
     }
     > .panes {
+        flex: 1;
+        .container {
+            position: relative;
+            .el-icon-circle-close {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+        }
         > li {
             display: none;
+            padding: 32px;
+            height: 100%;
+            width: 100%;
+            overflow: auto;
             &.active {
                 display: block;
             }
